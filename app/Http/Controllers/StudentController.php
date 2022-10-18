@@ -14,7 +14,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::all();
+
+        return view('students.index', compact('students'));
     }
 
     /**
@@ -24,7 +26,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('students.create');
     }
 
     /**
@@ -35,7 +37,26 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $params = $request->all();
+
+        $params = $request->validate(
+            [
+                'name' => 'required|max:255',
+                'surname' => 'required|max:255',
+                'date_of_birth' => 'required|date|before:today',
+                'fiscal_code' => 'required|min:16|max:16|distinct',
+                'enrolment_date' => 'required|date|before:today',
+                'email' => 'required||email|distinct|max:255',
+            ]
+        );
+
+        $lastRegistrationNumber = Student::max('registration_number');
+
+        $params['registration_number'] = $lastRegistrationNumber + 1;
+
+        $student = Student::create($params);
+
+        return redirect()->route('students.show', $student);
     }
 
     /**
@@ -45,8 +66,10 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Student $student)
-    {
-        
+    {        
+        $student = Student::findOrFail($student);
+
+        return view('students.show', compact('student'));
     }
 
     /**
@@ -57,7 +80,9 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        $department = Student::findOrFail($student);
+
+        return view('students.edit', compact('student'));
     }
 
     /**
@@ -69,7 +94,20 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        $s = Student::findOrFail($student);
+
+        $params = $request->validate([
+            'name' => 'required|max:255',
+            'surname' => 'required|max:255',
+            'date_of_birth' => 'required|date|before:today',
+            'fiscal_code' => 'required|min:16|max:16|distinct',
+            'enrolment_date' => 'required|date|before:today',
+            'email' => 'required||email|distinct|max:255',
+        ]);
+
+        $s->update($params);
+
+        return redirect()->route('students.show', $s);
     }
 
     /**
@@ -80,6 +118,10 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $s = Student::findOrFail($student);
+
+        $s->delete();
+
+        return redirect()->route('students.index');
     }
 }
