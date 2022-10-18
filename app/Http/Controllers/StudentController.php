@@ -65,9 +65,9 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show($id)
     {        
-        $student = Student::findOrFail($student);
+        $student = Student::findOrFail($id);
 
         return view('students.show', compact('student'));
     }
@@ -78,9 +78,9 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    public function edit($id)
     {
-        $department = Student::findOrFail($student);
+        $student = Student::findOrFail($id);
 
         return view('students.edit', compact('student'));
     }
@@ -92,9 +92,9 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, $id)
     {
-        $s = Student::findOrFail($student);
+        $student = Student::findOrFail($id);
 
         $params = $request->validate([
             'name' => 'required|max:255',
@@ -102,12 +102,12 @@ class StudentController extends Controller
             'date_of_birth' => 'required|date|before:today',
             'fiscal_code' => 'required|min:16|max:16|distinct',
             'enrolment_date' => 'required|date|before:today',
-            'email' => 'required||email|distinct|max:255',
+            'email' => 'required|email|distinct|max:255',
         ]);
 
-        $s->update($params);
+        $student->update($params);
 
-        return redirect()->route('students.show', $s);
+        return redirect()->route('students.show', $student);
     }
 
     /**

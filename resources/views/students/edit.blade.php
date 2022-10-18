@@ -10,7 +10,7 @@
     </div>
 
     <div class="container">
-        <form action="{{ route('students.store') }}" method="POST">
+        <form action="{{ route('students.update', $student) }}" method="POST">
 
             @csrf
             @method('PUT')
@@ -30,7 +30,7 @@
 
             <p>
                 <label for="date_of_birth">Data di nascita</label>
-                <input type="date" name="date_of_birth" id="date_of_birth">
+                <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $student->date_of_birth) }}">
             </p>
 
             <p>
@@ -40,7 +40,7 @@
 
             <p>
                 <label for="enrolment_date">Data di iscrizione</label>
-                <input type="date" name="enrolment_date" id="enrolment_date">
+                <input type="date" name="enrolment_date" id="enrolment_date" value="{{ old('enrolment_date', $student->enrolment_date) }}">
             </p>
 
             <p>

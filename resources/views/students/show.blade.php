@@ -7,7 +7,7 @@
     <div>
         <ul>
             <li>
-                <span>DAta di nascita:</span> {{ $student->date_of_birth }}
+                <span>Data di nascita:</span> {{ $student->date_of_birth }}
             </li>
             <li>
                 <span>Codice fiscale:</span> {{ $student->fiscal_code }}
