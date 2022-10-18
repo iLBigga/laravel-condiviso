@@ -66,7 +66,7 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Student $student)
-    {
+    {        
         $student = Student::findOrFail($student);
 
         return view('students.show', compact('student'));
