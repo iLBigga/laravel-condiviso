@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'DepartmentController@show');
+Route::get('/', function () {
+    return view('home');
+})->name('homepage');
+
 
 Route::resource('students', 'StudentController');
